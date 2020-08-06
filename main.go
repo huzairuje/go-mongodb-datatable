@@ -14,7 +14,7 @@ func main() {
 		handler.SampleDataJson(writer)
 	})
 	http.HandleFunc("/list-data", func(writer http.ResponseWriter, request *http.Request) {
-		handler.ListData(writer)
+		handler.ListData(writer, request)
 	})
 	http.Handle("/static/",
 		http.StripPrefix("/static/",

@@ -2,6 +2,8 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
+	"github.com/huzairuje/go-mongodb-datatable/models"
 	"html/template"
 	"net/http"
 	"path"
@@ -29,10 +31,29 @@ func Index(writer http.ResponseWriter) {
 	}
 }
 
-func ListData(writer http.ResponseWriter) {
+func ListData(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	var sampleArray []dataSample
-	jsonBytes, err := json.Marshal(sampleArray)
+	sampleArray := []dataSample{
+		{
+			Name:    "Thomas",
+			Address: "Indramayu",
+		},
+		{
+			Name:    "Dugoy",
+			Address: "Padalarang",
+		},
+	}
+
+	fmt.Println("GET param were: ", request.FormValue("name"))
+
+	dataTableArray := models.RspAjaxDataTables{
+		Draw:            0,
+		RecordsTotal:    0,
+		RecordsFiltered: 0,
+		Data:            sampleArray,
+	}
+
+	jsonBytes, err := json.Marshal(dataTableArray)
 	if err != nil {
 		writer.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		writer.WriteHeader(http.StatusInternalServerError)
